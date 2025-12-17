@@ -298,6 +298,9 @@ m.evals = {
     get_length = function(self, node, environment)
         return #self:evaluate(node.value, environment)
     end,
+    bit_not = function(self, node, environment)
+        return ~self:evaluate(node.value, environment)
+    end,
     varargs = function(self, node, environment)
         local varargs = self:getEnvVarargs(environment)
         return table.unpack(varargs)
@@ -319,6 +322,9 @@ m.operations = {
     end,
     SLASH = function(l, r)
         return l / r
+    end,
+    FLOOR_DIVIDE = function(l, r)
+        return l//r
     end,
     PRECENTAGE = function(l, r)
         return l % r
@@ -346,7 +352,22 @@ m.operations = {
     end,
     NOT_EQUAL = function(l, r)
         return l ~= r
-    end
+    end,
+    BIT_OR = function(l, r)
+        return l | r
+    end,
+    TILDE = function(l, r)
+        return l ~ r
+    end,
+    BIT_AND = function(l, r)
+        return l & r
+    end,
+    BIT_LSHIFT = function(l, r)
+        return l << r
+    end,
+    BIT_RSHIFT = function(l, r)
+        return l >> r
+    end,
 }
 
 function m:evaluate(node, environment)

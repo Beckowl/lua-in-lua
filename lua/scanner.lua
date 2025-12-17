@@ -24,17 +24,35 @@ local m = {
             end
         end,
         ['*'] = function(self) self:addToken('STAR') end,
-        ['/'] = function(self) self:addToken('SLASH') end,
+        ['/'] = function(self) self:addToken(self:match('/') and 'FLOOR_DIVIDE' or 'SLASH') end,
         ['^'] = function(self) self:addToken('UP') end,
         ['%'] = function(self) self:addToken('PRECENTAGE') end,
         ['.'] = function(self) self:addToken(self:match('.') and (self:match('.') and 'VARARGS' or 'CONCAT') or 'DOT') end,
         [','] = function(self) self:addToken('COMMA') end,
         [':'] = function(self) self:addToken('COLON') end,
         [';'] = function(self) self:addToken('SEMICOLON') end,
-        ['<'] = function(self) self:addToken(self:match('=') and 'LESS_EQUAL' or 'LESS') end,
-        ['>'] = function(self) self:addToken(self:match('=') and 'GREATER_EQUAL' or 'GREATER') end,
+        ['<'] = function(self)
+            if self:match('=') then
+                self:addToken('LESS_EQUAL')
+            elseif self:match('<') then
+                self:addToken('BIT_LSHIFT')
+            else
+                self:addToken('LESS')
+            end
+        end,
+        ['>'] = function(self)
+            if self:match('=') then
+                self:addToken('GREATER_EQUAL')
+            elseif self:match('<') then
+                self:addToken('BIT_RSHIFT')
+            else
+                self:addToken('GREATER')
+            end
+        end,
         ['='] = function(self) self:addToken(self:match('=') and 'DOUBLE_EQUALS' or 'EQUALS') end,
-        ['~'] = function(self) self:addToken(self:match('=') and 'NOT_EQUAL' or 'TILDA') end,
+        ['~'] = function(self) self:addToken(self:match('=') and 'NOT_EQUAL' or 'TILDE') end,
+        ['|'] = function(self) self:addToken('BIT_OR') end,
+        ['&'] = function(self) self:addToken('BIT_AND') end,
         ['#'] = function(self) self:addToken('HASHTAG') end,
         ['{'] = function(self) self:addToken('OPEN_BRACE') end,
         ['}'] = function(self) self:addToken('CLOSE_BRACE') end,

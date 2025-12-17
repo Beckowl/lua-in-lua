@@ -14,6 +14,12 @@ local m = {
         DOUBLE_EQUALS = {prec=5, assoc='left'},
         NOT_EQUAL = {prec=5, assoc='left'},
 
+        BIT_OR = { prec = 6, assoc = 'left'},
+        TILDE = { prec = 7, assoc = 'left'},
+        BIT_AND = { prec = 8, assoc = 'left'},
+        BIT_LSHIFT = { prec = 9, assoc = 'left'},
+        BIT_RSHIFT = { prec = 9, assoc = 'left'},
+
         CONCAT = {prec=10, assoc='left'},
 
         PLUS = {prec=20, assoc='left'},
@@ -21,6 +27,7 @@ local m = {
 
         STAR = {prec=30, assoc='left'},
         SLASH = {prec=30, assoc='left'},
+        FLOOR_DIVIDE = {prec=30, assoc='left'},
         PRECENTAGE = {prec=30, assoc='left'},
 
         UP = {prec=40, assoc='right'}
@@ -401,6 +408,7 @@ function m:parsePrimaryExpr()
     if self:match("not") then return {type="not", value=self:parseBinOp(40)} end
     if self:match("MINUS") then return {type="uminus", value=self:parseBinOp(40)} end
     if self:match("HASHTAG") then return {type="get_length", value=self:parseBinOp(40)} end
+    if self:match("TILDE") then return {type="bit_not", value=self:parseBinOp(40)} end
     if self:match("VARARGS") then return {type="varargs"} end
 
     print(self:peek().type)
