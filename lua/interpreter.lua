@@ -22,7 +22,7 @@ m.evals = {
 
             if not success then
                 if type(r) == 'table' then
-                    if r.type == 'return_error' then return unpack(r.values) end
+                    if r.type == 'return_error' then return table.unpack(r.values) end
                     if r.type == 'break_error' then return end
                 end
                 error(r)
@@ -132,7 +132,7 @@ m.evals = {
             --args[#args+1] = self:evaluate(arg_node, environment)
         end
 
-        return callee(unpack(args))
+        return callee(table.unpack(args))
     end,
     ["get_call"] = function(self, node, environment)
         local callee = self:evaluate(node.callee, environment)
@@ -146,7 +146,7 @@ m.evals = {
             --args[#args+1] = self:evaluate(arg_node, environment)
         end
         
-        return callee[node.index](callee, unpack(args))
+        return callee[node.index](callee, table.unpack(args))
     end,
     ["variable"] = function(self, node, environment)
         return self:getFromEnv(environment, node.name)
@@ -253,7 +253,7 @@ m.evals = {
     end,
     ["foreach"] = function(self, node, environment)
         do
-            local f, s, var = unpack(self:evaluateExpressionList(node.expressions, environment))
+            local f, s, var = table.unpack(self:evaluateExpressionList(node.expressions, environment))
             while true do
                 local vars = {f(s, var)}
                 if vars[1] == nil then break end
@@ -300,7 +300,7 @@ m.evals = {
     end,
     varargs = function(self, node, environment)
         local varargs = self:getEnvVarargs(environment)
-        return unpack(varargs)
+        return table.unpack(varargs)
     end,
     ['debugdmpenvstack'] = function(self, node, environment)
         self:dumpEnv(environment)

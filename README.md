@@ -43,7 +43,7 @@ local env = {
         if not data[1] then
             return false, data[2].error_object
         else
-            return unpack(data)
+            return table.unpack(data)
         end
     end,
     error = function(object)
@@ -51,7 +51,6 @@ local env = {
     end,
     pairs = pairs,
     ipairs = ipairs,
-    unpack = unpack,
     table = table,
     string = string,
     tostring = tostring,
