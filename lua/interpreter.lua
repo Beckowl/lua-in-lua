@@ -132,7 +132,7 @@ m.evals = {
             --args[#args+1] = self:evaluate(arg_node, environment)
         end
 
-        return callee(table.unpack(args))
+        return callee(table.unpack(args, 1, #node.args))
     end,
     ["get_call"] = function(self, node, environment)
         local callee = self:evaluate(node.callee, environment)
@@ -146,7 +146,7 @@ m.evals = {
             --args[#args+1] = self:evaluate(arg_node, environment)
         end
         
-        return callee[node.index](callee, table.unpack(args))
+        return callee(table.unpack(args, 1, #node.args))
     end,
     ["variable"] = function(self, node, environment)
         return self:getFromEnv(environment, node.name)
